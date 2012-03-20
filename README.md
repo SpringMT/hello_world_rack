@@ -83,3 +83,32 @@ Linux
 ab -c 10 -n 100 [PATH] 
 ~~~
 
+## plack
+
+~~~
+mkdir extlib
+wget --no-check-certificate http://cpanmin.us/
+
+curl -L http://xrl.us/perlbrew > perlbrew
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+perl perlbrew install
+rm perlbrew
+echo 'source $HOME/perl5/perlbrew/etc/bashrc' >> ~/.bashrc
+source .bashrc
+perlbrew init
+perlbrew install 5.14.2
+perlbrew switch perl-5.14.2
+perl cpanm -v -L extlib Module::CoreList
+perl cpanm -v -L extlib Module::Install CPAN
+perl cpanm -v -L extlib Plack
+perl cpanm -v -L extlib Starman
+perl cpanm -v -L extlib Plack::Runner
+
+starman --workers=60 -p 3000 app.psgi
+~~~
+
+## thin
+
+~~~
+bundle exec thin start --servers 30 -d
+~~~
